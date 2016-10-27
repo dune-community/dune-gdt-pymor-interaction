@@ -61,3 +61,6 @@
 [submodule "dune-pybindxi"]
 	path = dune-pybindxi
 	url = https://github.com/dune-community/dune-pybindxi.git
+[submodule "pymor"]
+	path = pymor
+	url = https://github.com/pymor/pymor.git
