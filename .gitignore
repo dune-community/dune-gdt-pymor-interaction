@@ -1,4 +1,5 @@
 PATH.sh
 demos
 demos-*
-build-*
+build*
+.ipynb_checkpoints
