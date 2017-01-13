@@ -19,11 +19,15 @@ In order to build everything, do the following:
   ```
   
 * Take a look at `config.opts/` and find settings and a compiler which suits your
-  system, e.g. `config.opts/gcc-debug`. Select one of those options by defining
+  system, e.g. `config.opts/gcc-debug-no-mpi`. Select one of those options by defining
   
   ```
-  export OPTS=gcc-debug
+  export OPTS=gcc-debug-no-mpi
   ```
+  Note that we currently advise to disable parallel features as the bindings are not
+  yet complete for that case. If you have the `ninja` generator installed we recommend
+  to make use of it by selecting `OPTS=gcc-debug-no-mpi.ninja`, which usually speeds up
+  builds significantly.
   
 * Call
 
@@ -59,7 +63,7 @@ In order to build everything, do the following:
   ```
   
   This creates a directory corresponding to the selected options
-  (e.g. `build-gcc-debug`) which contains a subfolder for each DUNE module. 
+  (e.g. `build-gcc-debug-no-mpi`) which contains a subfolder for each DUNE module.
 
 * Symlink the build directory to allow automatic discovery of the generated python
   bindings:
