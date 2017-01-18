@@ -1,14 +1,13 @@
 ```
-# This file is part of the locally-conservative-rb project:
-#   https://github.com/ftalbrecht/locally-conservative-rb
+# This file is part of the dune-gdt-pymor-interaction project:
+#   https://github.com/dune-community/dune-gdt-pymor-interaction
 # Copyright holders: Felix Schindler
 # License: BSD 2-Clause License (http://opensource.org/licenses/BSD-2-Clause)
 ```
 
-[locally-conservative-rb](https://github.com/ftalbrecht/locally-conservative-rb)
-is a git supermodule which serves as a demonstration for locally conservative
-reduced basis (RB) methods. If you have any questions, do not hesitate to
-[contact me](http://felixschindler.net/).
+[dune-gdt-pymor-interaction](https://github.com/dune-community/dune-gdt-pymor-interaction)
+is a git supermodule which serves as a demonstration for the interaction between
+[dune-gdt](https://github.com/dune-community/dune-gdt) and [pymor](http://pymor.org).
 
 In order to build everything, do the following:
 
