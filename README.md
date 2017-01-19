@@ -23,6 +23,7 @@ In order to build everything, do the following:
   ```
   export OPTS=gcc-debug
   ```
+
   If you have the `ninja` generator installed we recommend to make use of it by
   selecting `OPTS=gcc-debug.ninja`, which usually speeds up builds significantly.
   
@@ -45,6 +46,9 @@ In order to build everything, do the following:
   ./local/bin/download_external_libraries.py
   ./local/bin/build_external_libraries.py
   ```
+
+  This will in particular create a Python virtualenv, the configuration of which
+  can be adapted by editing the virtualenv section `external-libraries.cfg`.
 
 * Update the local build environment to make use of the virualenv:
 
