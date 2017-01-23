@@ -11,6 +11,13 @@ is a git supermodule which serves as a demonstration for the interaction between
 
 In order to build everything, do the following:
 
+* Install required software (the following list is not yet complete):
+
+  - compiler: we currently recommend gcc >= 5.0
+  - metis and parmetis: if these are not available on your system you can enable the
+    respective sections in `external-libraries.cfg` _and_ update the build command
+    for `alugrid` accordingly
+
 * Initialize all submodules:
 
   ```
@@ -25,7 +32,8 @@ In order to build everything, do the following:
   ```
 
   If you have the `ninja` generator installed we recommend to make use of it by
-  selecting `OPTS=gcc-debug.ninja`, which usually speeds up builds significantly.
+  selecting `OPTS=gcc-debug.ninja` (if such a file exists), which usually speeds up
+  builds significantly.
   
 * Call
 
@@ -47,14 +55,11 @@ In order to build everything, do the following:
   ./local/bin/build_external_libraries.py
   ```
 
-  This will in particular create a Python virtualenv, the configuration of which
-  can be adapted by editing the virtualenv section `external-libraries.cfg`.
-
-* Update the local build environment to make use of the virualenv:
-
-  ```
-  source PATH.sh
-  ```
+  This will in particular create a small Python virtualenv for the jupyter notebook,
+  the configuration of which can be adapted by editing the virtualenv section
+  `external-libraries.cfg` (see below). This virtualenv will be activated from now on,
+  whenever `PATH.sh` is sourced again. If you do not wish to make use of the virtualenv,
+  simply disable the respective section in `external-libraries.cfg`.
 
 * Build all DUNE modules using `cmake` and the selected options (this _will_ take
   some time):
@@ -66,15 +71,26 @@ In order to build everything, do the following:
   This creates a directory corresponding to the selected options
   (e.g. `build-gcc-debug`) which contains a subfolder for each DUNE module.
 
-* Symlink the build directory to allow automatic discovery of the generated python
-  bindings:
+* The created Python bindings of each DUNE module are now available within the
+  respective subdirectories of the build directory. Possible ways to make use of these are:
 
-  ```
-  ln -s build-$OPTS build
-  ```
+  (i) Create the following symlink and source the PATH.sh again:
 
-* Start the jupyter notebook server and take a look at the notebooks:
+      ```
+      ln -s build-$OPTS build && . PATH.sh
+      ```
 
-  ```
-  ./start_notebook_server.py
-  ```
+      This will activate the virtualenv with an adapted Python path. Afterwards,
+      start the jupyter notebook server and take a look at the notebooks:
+
+      ```
+      ./start_notebook_server.py
+      ```
+
+  (ii) Create and/or source your desired virtualenv and add the required locations to the
+       Python path, e.g. by calling
+
+       ```
+       for ii in dune-xt-common dune-xt-grid dune-xt-functions dune-xt-la dune-gdt; do echo "$BASEDIR/build-$OPTS/$ii" > "$(python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')/$ii.pth"; done
+       ```
+
