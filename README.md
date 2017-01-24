@@ -13,7 +13,7 @@ In order to build everything, do the following:
 
 * Install required software (the following list is not yet complete):
 
-  - compiler: we currently recommend gcc >= 5.0
+  - compiler: we currently require gcc >= 5.0 or clang >= 3.8
   - metis and parmetis: if these are not available on your system you can enable the
     respective sections in `external-libraries.cfg` _and_ update the build command
     for `alugrid` accordingly
@@ -25,7 +25,10 @@ In order to build everything, do the following:
   ```
   
 * Take a look at `config.opts/` and find settings and a compiler which suits your
-  system, e.g. `config.opts/gcc-debug`. Select one of those options by defining
+  system, e.g. `config.opts/gcc-debug`. The important part to look for is the
+  definition of `CC` in these files: if, e.g., wish to use clang in version 3.8 and
+  it is available as `clang-3.8`, choose `OPTS=clang-3.8-debug`, if it is available
+  as `clang`, choose `OPTS=clang-debug`. Select one of those options by defining
   
   ```
   export OPTS=gcc-debug
@@ -33,7 +36,7 @@ In order to build everything, do the following:
 
   If you have the `ninja` generator installed we recommend to make use of it by
   selecting `OPTS=gcc-debug.ninja` (if such a file exists), which usually speeds up
-  builds.
+  the builds.
   
 * Call
 
