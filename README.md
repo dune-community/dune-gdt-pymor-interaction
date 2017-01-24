@@ -33,7 +33,7 @@ In order to build everything, do the following:
 
   If you have the `ninja` generator installed we recommend to make use of it by
   selecting `OPTS=gcc-debug.ninja` (if such a file exists), which usually speeds up
-  builds significantly.
+  builds.
   
 * Call
 
@@ -59,7 +59,12 @@ In order to build everything, do the following:
   the configuration of which can be adapted by editing the virtualenv section
   `external-libraries.cfg` (see below). This virtualenv will be activated from now on,
   whenever `PATH.sh` is sourced again. If you do not wish to make use of the virtualenv,
-  simply disable the respective section in `external-libraries.cfg`.
+  simply disable the respective section in `external-libraries.cfg`. Due to a bug in
+  dune-python, however, we currently require this virtualenv:
+
+  ```
+  source PATH.sh
+  ```
 
 * Build all DUNE modules using `cmake` and the selected options (this _will_ take
   some time):
