@@ -9,14 +9,23 @@
 is a git supermodule which serves as a demonstration for the interaction between
 [dune-gdt](https://github.com/dune-community/dune-gdt) and [pymor](http://pymor.org).
 
-In order to build everything, do the following:
 
-* Install required software (the following list is not yet complete):
+Some notes on required software
+===============================
 
-  - compiler: we currently require gcc >= 5.0 or clang >= 3.8
-  - metis and parmetis: if these are not available on your system you can enable the
-    respective sections in `external-libraries.cfg` _and_ update the build command
-    for `alugrid` accordingly
+* Compiler: we currently test gcc >= 4.9 and clang >= 3.8, other compilers may also work
+* If you want to use alugrid (recommended) you need metis installed for DUNE to find alugrid (if your metis is
+  installed somewhere else than `/usr/`, you need to adapt the metis location in the appropriate alugrid build command
+  in `external-libraries.sh`).
+* For a list of minimal (and optional) dependencies for several linux distributions, you can take a look at the
+  [docker-for-dune](https://github.com/ftalbrecht/docker-for-dune) repository, e.g.,
+  [debian/Dockerfile.minimal](https://github.com/ftalbrecht/docker-for-dune/blob/master/debian/Dockerfile.minimal)
+  for the minimal requirements on Debian jessie (and derived distributions).
+
+
+To build everything, do the following
+=====================================
+
 
 * Initialize all submodules:
 
@@ -24,19 +33,17 @@ In order to build everything, do the following:
   git submodule update --init --recursive
   ```
   
-* Take a look at `config.opts/` and find settings and a compiler which suits your
-  system, e.g. `config.opts/gcc-debug`. The important part to look for is the
-  definition of `CC` in these files: if, e.g., wish to use clang in version 3.8 and
-  it is available as `clang-3.8`, choose `OPTS=clang-3.8-debug`, if it is available
-  as `clang`, choose `OPTS=clang-debug`. Select one of those options by defining
+* Take a look at `config.opts/` and find settings and a compiler which suits your system, e.g. `config.opts/gcc`. The
+  important part to look for is the definition of `CC` in these files: if, e.g., you wish to use clang in version 3.8
+  and clang is available on your system as `clang-3.8`, choose `OPTS=clang-3.8`, if it is available as `clang`, choose
+  `OPTS=clang`. Select one of those options by defining
   
   ```
-  export OPTS=gcc-debug
+  export OPTS=gcc
   ```
 
-  If you have the `ninja` generator installed we recommend to make use of it by
-  selecting `OPTS=gcc-debug.ninja` (if such a file exists), which usually speeds up
-  the builds.
+  If you have the `ninja` generator installed we recommend to make use of it by selecting `OPTS=gcc.ninja` (if such a
+  file exists), which usually speeds up the builds.
   
 * Call
 
@@ -44,8 +51,8 @@ In order to build everything, do the following:
   ./local/bin/gen_path.py
   ```
   
-  to generate a file `PATH.sh` which defines a local build environment. From now
-  on you should source this file whenever you plan to work on this project, e.g.:
+  to generate a file `PATH.sh` which defines a local build environment. From now on you should source this file
+  whenever you plan to work on this project, e.g. (depending on your shell):
   
   ```
   source PATH.sh
@@ -58,47 +65,55 @@ In order to build everything, do the following:
   ./local/bin/build_external_libraries.py
   ```
 
-  This will in particular create a small Python virtualenv for the jupyter notebook,
-  the configuration of which can be adapted by editing the virtualenv section
-  `external-libraries.cfg` (see below). This virtualenv will be activated from now on,
-  whenever `PATH.sh` is sourced again. If you do not wish to make use of the virtualenv,
-  simply disable the respective section in `external-libraries.cfg`. Due to a bug in
-  dune-python, however, we currently require this virtualenv:
+  This will in particular create a small Python virtualenv for the jupyter notebook, the configuration of which can be
+  adapted by editing the virtualenv section in `external-libraries.cfg` (see below). This virtualenv will be activated
+  from now on, whenever `PATH.sh` is sourced again. If you do not wish to make use of the virtualenv, simply disable
+  the respective section in `external-libraries.cfg`. Due to a bug in dune-python (regarding pyparsing), however, we
+  currently require this virtualenv to build DUNE:
 
   ```
   source PATH.sh
   ```
 
-* Build all DUNE modules using `cmake` and the selected options (this _will_ take
-  some time):
+* Build all DUNE modules using `cmake` and the selected options (this _will_ take some time):
 
   ```
   ./dune-common/bin/dunecontrol --opts=config.opts/$OPTS --builddir=$PWD/build-$OPTS all
   ```
   
-  This creates a directory corresponding to the selected options
-  (e.g. `build-gcc-debug`) which contains a subfolder for each DUNE module.
+  This creates a directory corresponding to the selected options (e.g. `build-gcc`) which contains a subfolder for each
+  DUNE module.
 
-* The created Python bindings of each DUNE module are now available within the
-  respective subdirectories of the build directory. Possible ways to make use of these are:
+* The created Python bindings of each DUNE module are now available within the respective subdirectories of the build
+  directory. To make use of the bindings:
 
-  (i) Create the following symlink and source the PATH.sh again:
+  - Create and activate you favorite virtualenv with python3 as interpreter or use the prepared virtualenv:
 
-      ```
-      ln -s build-$OPTS build && . PATH.sh
-      ```
+    ```
+    source PATH.sh
+    ```
 
-      This will activate the virtualenv with an adapted Python path. Afterwards,
-      start the jupyter notebook server and take a look at the notebooks:
+  - Add the locations of interest to the Python interpreter of the virtualenv:
 
-      ```
-      ./start_notebook_server.py
-      ```
+    ```
+    for ii in dune-xt-common dune-xt-grid dune-xt-functions dune-xt-la dune-gdt; do echo "$BASEDIR/build-$OPTS/$ii" > "$(python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')/$ii.pth"; done
+    ```
 
-  (ii) Create and/or source your desired virtualenv and add the required locations to the
-       Python path, e.g. by calling
+  - There is a bug in debian which might trigger an MPI init error when importing the Python modules (see for instance
+    https://lists.debian.org/debian-science/2015/05/msg00054.html). As a woraround, set
 
-       ```
-       for ii in dune-xt-common dune-xt-grid dune-xt-functions dune-xt-la dune-gdt; do echo "$BASEDIR/build-$OPTS/$ii" > "$(python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')/$ii.pth"; done
-       ```
+    ```
+    export OMPI_MCA_orte_rsh_agent=/bin/false
+    ```
+
+    or append this command to `PATH.sh` and source it again.
+
+* There are jupyter notebooks available with some demos. Either `pip install notebook` in your favorite virtualenv or
+  use the prepared one. Calling
+
+  ```
+  ./start_notebook_server.py
+  ```
+
+  should open your browser and show the notebooks.
 
