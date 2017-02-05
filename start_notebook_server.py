@@ -3,5 +3,5 @@
 export NOTEBOOK_PATH=$PWD/notebooks
 export NOTEBOOK_PORT=18881
 
-jupyter-notebook --notebook-dir=$NOTEBOOK_PATH --port=$NOTEBOOK_PORT
+jupyter-notebook --ip 0.0.0.0 --no-browser --notebook-dir=$NOTEBOOK_PATH --port=$NOTEBOOK_PORT
 
