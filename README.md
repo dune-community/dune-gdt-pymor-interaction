@@ -78,7 +78,7 @@ To build everything, do the following
 * Build all DUNE modules using `cmake` and the selected options (this _will_ take some time):
 
   ```
-  ./dune-common/bin/dunecontrol --opts=config.opts/$OPTS --builddir=$PWD/build-$OPTS all
+  ./dune-common/bin/dunecontrol --opts=config.opts/$OPTS --builddir=$BASEDIR/build-$OPTS all
   ```
   
   This creates a directory corresponding to the selected options (e.g. `build-gcc`) which contains a subfolder for each
