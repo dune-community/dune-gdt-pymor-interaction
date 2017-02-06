@@ -17,9 +17,9 @@ Some notes on required software
 * If you want to use alugrid (recommended) you need metis installed for DUNE to find alugrid (if your metis is
   installed somewhere else than `/usr/`, you need to adapt the metis location in the appropriate alugrid build command
   in `external-libraries.sh`).
-* For a list of minimal (and optional) dependencies for several linux distributions, you can take a look at the
-  [docker-for-dune](https://github.com/ftalbrecht/docker-for-dune) repository, e.g.,
-  [debian/Dockerfile.minimal](https://github.com/ftalbrecht/docker-for-dune/blob/master/debian/Dockerfile.minimal)
+* For a list of minimal (and optional) dependencies for several linux distributions, you can take a look our
+  [Dockerfiles](https://github.com/dune-community/Dockerfiles) repository, e.g.,
+  [debian/Dockerfile.minimal](https://github.com/dune-community/Dockerfiles/blob/master/debian/Dockerfile.minimal)
   for the minimal requirements on Debian jessie (and derived distributions).
 
 
@@ -44,6 +44,10 @@ To build everything, do the following
 
   If you have the `ninja` generator installed we recommend to make use of it by selecting `OPTS=gcc.ninja` (if such a
   file exists), which usually speeds up the builds.
+
+* Note that dune-xt and dune-gdt do not build the Python bindings by default. You thus need to either add
+  `-DDUNE_XT_WITH_PYTHON_BINDINGS=TRUE` to the `CMAKE_FLAGS` of the selected config.opts file, or call `dunecontrol` twice
+  (see below).
   
 * Call
 
@@ -83,6 +87,21 @@ To build everything, do the following
   
   This creates a directory corresponding to the selected options (e.g. `build-gcc`) which contains a subfolder for each
   DUNE module.
+
+* If you did not add `-DDUNE_XT_WITH_PYTHON_BINDINGS=TRUE` to your `CMAKE_FLAGS` (see above), manually build the
+  Python bindings by calling either
+
+  ```
+  ./dune-common/bin/dunecontrol --opts=config.opts/$OPTS --builddir=$BASEDIR/build-$OPTS bexec "make bindings || echo no bindings"
+  ```
+
+  if you are using the `make` generator (the default if your selected opts file does not end with `.ninja`) or by calling
+
+  ```
+  ./dune-common/bin/dunecontrol --opts=config.opts/$OPTS --builddir=$BASEDIR/build-$OPTS bexec "ninja bindings || echo no bindings"
+  ```
+
+  if you are using the `ninja` generator.
 
 * The created Python bindings of each DUNE module are now available within the respective subdirectories of the build
   directory. To make use of the bindings:
