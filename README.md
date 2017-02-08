@@ -45,9 +45,15 @@ To build everything, do the following
   If you have the `ninja` generator installed we recommend to make use of it by selecting `OPTS=gcc.ninja` (if such a
   file exists), which usually speeds up the builds.
 
-* Note that dune-xt and dune-gdt do not build the Python bindings by default. You thus need to either add
-  `-DDUNE_XT_WITH_PYTHON_BINDINGS=TRUE` to the `CMAKE_FLAGS` of the selected config.opts file, or call `dunecontrol` twice
-  (see below).
+* Note that dune-xt and dune-gdt do not build the Python bindings by default. You thus need to either
+  - add `-DDUNE_XT_WITH_PYTHON_BINDINGS=TRUE` to the `CMAKE_FLAGS` of the selected config.opts file (to set this
+    permanently),
+  - or
+    ```
+    export CMAKE_FLAGS="-DDUNE_XT_WITH_PYTHON_BINDINGS=TRUE ${CMAKE_FLAGS}"
+    ```
+    to set this temporarily (recommended),
+  - or call `dunecontrol` twice (see below).
   
 * Call
 
@@ -78,6 +84,21 @@ To build everything, do the following
   ```
   source PATH.sh
   ```
+
+* To allow DUNE to find some of the locally built dependencies, you need to set the `CMAKE_INSTALL_PREFIX` by either
+  - calling
+
+    ```
+    echo "CMAKE_FLAGS=\"-DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} "'${CMAKE_FLAGS}'"\"" >> config.opts/$OPTS
+    ```
+
+    to set this permanently,
+  - or by calling
+
+    ```
+    export CMAKE_FLAGS="-DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} ${CMAKE_FLAGS}"
+    ```
+    to set this temporarily (recommended).
 
 * Build all DUNE modules using `cmake` and the selected options (this _will_ take some time):
 
