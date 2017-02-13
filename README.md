@@ -46,8 +46,9 @@ To build everything, do the following
   file exists), which usually speeds up the builds.
 
 * Note that dune-xt and dune-gdt do not build the Python bindings by default. You thus need to either
-  - add `-DDUNE_XT_WITH_PYTHON_BINDINGS=TRUE` to the `CMAKE_FLAGS` of the selected config.opts file (to set this
-    permanently),
+
+  - add `-DDUNE_XT_WITH_PYTHON_BINDINGS=TRUE` to the `CMAKE_FLAGS` of the selected config.opts file to set this
+    permanently,
   - or
     ```
     export CMAKE_FLAGS="-DDUNE_XT_WITH_PYTHON_BINDINGS=TRUE ${CMAKE_FLAGS}"
@@ -113,13 +114,13 @@ To build everything, do the following
   Python bindings by calling either
 
   ```
-  ./dune-common/bin/dunecontrol --opts=config.opts/$OPTS --builddir=$BASEDIR/build-$OPTS bexec "make bindings || echo no bindings"
+  ./dune-common/bin/dunecontrol --opts=config.opts/$OPTS --builddir=$BASEDIR/build-$OPTS bexec "make -j 1 bindings || echo no bindings"
   ```
 
   if you are using the `make` generator (the default if your selected opts file does not end with `.ninja`) or by calling
 
   ```
-  ./dune-common/bin/dunecontrol --opts=config.opts/$OPTS --builddir=$BASEDIR/build-$OPTS bexec "ninja bindings || echo no bindings"
+  ./dune-common/bin/dunecontrol --opts=config.opts/$OPTS --builddir=$BASEDIR/build-$OPTS bexec "ninja -j 1 bindings || echo no bindings"
   ```
 
   if you are using the `ninja` generator.
