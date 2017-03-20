@@ -73,3 +73,6 @@
 [submodule "dune-functions"]
 	path = dune-functions
 	url = https://gitlab.dune-project.org/staging/dune-functions.git
+[submodule "dune-grid-glue"]
+	path = dune-grid-glue
+	url = https://gitlab.dune-project.org/extensions/dune-grid-glue.git
