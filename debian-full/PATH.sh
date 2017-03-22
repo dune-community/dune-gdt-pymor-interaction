@@ -1,12 +1,10 @@
-export BASEDIR=/home/falbr_01/dune-gdt-pymor-interaction
-export INSTALL_PREFIX=$BASEDIR/debian-full/local
-export PATH=$INSTALL_PREFIX/bin:$PATH
-export LD_LIBRARY_PATH=$INSTALL_PREFIX/lib64:$INSTALL_PREFIX/lib:$LD_LIBRARY_PATH
-export PKG_CONFIG_PATH=$INSTALL_PREFIX/lib64/pkgconfig:$INSTALL_PREFIX/lib/pkgconfig:$INSTALL_PREFIX/share/pkgconfig:$PKG_CONFIG_PATH
-export CC=gcc
-export CXX=g++
-export F77=gfortran
-[ -e $INSTALL_PREFIX/bin/activate ] && . $INSTALL_PREFIX/bin/activate
-export OMP_NUM_THREADS=1
+export BASEDIR=${PWD}/..
+export INSTALL_PREFIX=${PWD}/local
+export PATH=${INSTALL_PREFIX}/bin:$PATH
+export LD_LIBRARY_PATH=${INSTALL_PREFIX}/lib64:${INSTALL_PREFIX}/lib:$LD_LIBRARY_PATH
+export PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib64/pkgconfig:${INSTALL_PREFIX}/lib/pkgconfig:${INSTALL_PREFIX}/share/pkgconfig:$PKG_CONFIG_PATH
+# -DCMAKE_PREFIX_PATH= is for alberta
+export CMAKE_FLAGS="-DCMAKE_PREFIX_PATH=$INSTALL_PREFIX -DDUNE_XT_WITH_PYTHON_BINDINGS=TRUE"
+[ -e ${INSTALL_PREFIX}/bin/activate ] && . ${INSTALL_PREFIX}/bin/activate
 export OMPI_MCA_orte_rsh_agent=/bin/false
-export CMAKE_FLAGS="-DDUNE_XT_WITH_PYTHON_BINDINGS=TRUE"
+export OMP_NUM_THREADS=1
