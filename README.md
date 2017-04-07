@@ -177,7 +177,7 @@ To make use of the bindings:
   ```
 
 * There is a bug in debian which might trigger an MPI init error when importing the Python modules (see for instance https://lists.debian.org/debian-science/2015/05/msg00054.html).
-  As a woraround, set
+  As a workaround, set
 
   ```bash
   export OMPI_MCA_orte_rsh_agent=/bin/false
