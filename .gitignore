@@ -1,5 +1,4 @@
-PATH*.sh
-demos*
+PATH.sh
 build*
 .ipynb_checkpoints
 local*
