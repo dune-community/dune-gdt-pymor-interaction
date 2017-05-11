@@ -159,7 +159,7 @@ If you did not add `-DDUNE_XT_WITH_PYTHON_BINDINGS=TRUE` to your `CMAKE_FLAGS` (
 ./dune-common/bin/dunecontrol --opts=config.opts/$OPTS --builddir=$INSTALL_PREFIX/../build-$OPTS bexec "make -j 1 bindings || echo no bindings"
 ```
 
-## 4: Make us of the python bindings
+## 4: Make use of the python bindings
 
 The created Python bindings of each DUNE module are now available within the respective subdirectories of the build directory.
 To make use of the bindings:
