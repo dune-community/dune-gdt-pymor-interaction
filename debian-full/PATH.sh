@@ -7,4 +7,4 @@ export PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib64/pkgconfig:${INSTALL_PREFIX}/lib/p
 export CMAKE_FLAGS="-DCMAKE_PREFIX_PATH=$INSTALL_PREFIX -DDUNE_XT_WITH_PYTHON_BINDINGS=TRUE"
 [ -e ${INSTALL_PREFIX}/bin/activate ] && . ${INSTALL_PREFIX}/bin/activate
 export OMPI_MCA_orte_rsh_agent=/bin/false
-export OMP_NUM_THREADS=1
+export OMP_NUM_THREADS=$(nproc)
